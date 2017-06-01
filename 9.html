@@ -1,0 +1,37 @@
+<style>
+ canvas { background: #eee }
+</style>
+
+<body>
+  
+<script>
+ var canvas = document.createElement('canvas'),
+   d = canvas.width = canvas.height = 200,
+   ctx = canvas.getContext('2d');
+
+ document.body.appendChild(canvas);
+
+ ctx.translate(d/2, d/2);
+ ctx.rotate(Math.PI);
+ ctx.lineWidth = 2;
+ ctx.lineCap = 'round';
+
+ for(var i=0; i<=360; i++) {
+   ctx.save();
+   
+   ctx.rotate(Math.PI * i/180);
+   ctx.translate(-ctx.lineWidth/2, ctx.lineWidth/2);
+   
+   ctx.beginPath();
+   ctx.moveTo(0, 0);
+   ctx.strokeStyle = 'hsl(' + i + ',100%,50%)';
+   
+   ctx.lineTo(0, d);
+   ctx.stroke();
+   ctx.closePath();
+   
+   ctx.restore();
+ }
+</script>
+
+</body>

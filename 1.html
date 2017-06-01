@@ -1,0 +1,108 @@
+<body>
+  <div id="canvasesdiv" style="position:relative; width:500px; height:300px;margin: 30px auto;">
+    <canvas id="layer1" width="500" height="300" style="z-index: 1; position:absolute; left:0px; top:0px;">
+      <!-- Insert fallback content here -->Sorry, your browser doesn't support canvas technology</canvas>
+    <canvas id="layer2" width="500" height="300" style="z-index: 2; position:absolute; left:0px; top:0px;"></canvas>
+    <canvas id="layer3" width="500" height="300" style="z-index: 3; position:absolute; left:0px; top:0px;"></canvas>
+  </div>
+  <script>
+   var canvasWidth = 500;
+   var canvasHeight = 300;
+   var spriteWidth = 100;
+   var spriteHeight = 100;
+   var walkSpeed = 100;
+   var runSpeed = 50;
+   var frames = 4;
+   var foregroundXPosition = 0;
+   var backgroundXPosition = 0;
+   var currentFrame = 0;
+   var layer1;
+   var layer2;
+   var layer3;
+   var ctx1;
+   var ctx2;
+   var ctx3;
+   var sprite = new Image();
+   var background = new Image();
+   var foreground = new Image();
+   var myIntervalVar;
+
+   document.addEventListener("DOMContentLoaded", init, false);
+
+   function init() {
+
+     sprite.src = "http://www.designucd.com/wp-content/uploads/2014/04/stickman.png";
+     background.src = 'http://www.designucd.com/wp-content/uploads/2014/04/background.png';
+     foreground.src = 'http://www.designucd.com/wp-content/uploads/2014/04/foreground.png';
+
+     layer1 = document.getElementById("layer1");
+     ctx1 = layer1.getContext("2d");
+     layer2 = document.getElementById("layer2");
+     ctx2 = layer2.getContext("2d");
+     layer3 = document.getElementById("layer3");
+     ctx3 = layer3.getContext("2d");
+
+     spritePositionY = (canvasHeight - spriteHeight) - 30;
+     spritePositionX = canvasWidth / 2 - spriteWidth / 2;
+
+
+     myIntervalVar = setInterval(drawAll, walkSpeed);
+
+     layer3.addEventListener("mousedown", mouseDownFunction, false);
+     layer3.addEventListener("mouseup", mouseUpFunction, false);
+   }
+
+   function mouseDownFunction(event) {
+     clearInterval(myIntervalVar);
+     myIntervalVar = setInterval(drawAll, runSpeed);
+   }
+
+   function mouseUpFunction(event) {
+     clearInterval(myIntervalVar);
+     myIntervalVar = setInterval(drawAll, walkSpeed);
+   }
+
+   function drawAll() {
+     draw1();
+     draw2();
+     draw3();
+   }
+
+   function draw1() {
+     ctx1.clearRect(0, 0, 1200, 300);
+     ctx1.drawImage(background, backgroundXPosition, 0);
+     ctx1.drawImage(background, backgroundXPosition - 1200, 0);
+
+     backgroundXPosition += 2;
+     if (backgroundXPosition >= 1200) {
+       backgroundXPosition = 0;
+     }
+   }
+
+   function draw2() {
+
+     ctx2.clearRect(spritePositionX, spritePositionY, spriteWidth, spriteHeight);
+     ctx2.drawImage(sprite, 0, spriteHeight * currentFrame, spriteWidth, spriteHeight, spritePositionX, spritePositionY, spriteWidth, spriteHeight);
+
+     if (currentFrame == frames) {
+       currentFrame = 0;
+     } else {
+       currentFrame++;
+     }
+
+   }
+
+   function draw3() {
+
+     ctx3.clearRect(0, 0, 552, 300);
+     ctx3.drawImage(foreground, foregroundXPosition, 0, 552, 300);
+     ctx3.drawImage(foreground, foregroundXPosition - 552, 0, 552, 300);
+     foregroundXPosition += 10;
+
+     if (foregroundXPosition >= 552) {
+       foregroundXPosition = 0;
+     }
+
+   }
+  </script>
+</body>
